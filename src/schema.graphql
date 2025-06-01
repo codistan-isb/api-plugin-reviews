@@ -4,8 +4,18 @@ type productReview {
   createdBy: createdByUserinfo!
   review: String!
   score: Float!
-  updatedAt:DateTime!
+  updatedAt: DateTime!
 }
+
+type storeReview {
+  _id: ID!
+  storeName: String!
+  createdBy: createdByUserinfo!
+  review: String!
+  score: Float!
+  updatedAt: DateTime!
+}
+
 type createdByUserinfo {
   name: String!
   image: String
@@ -17,8 +27,18 @@ input productReviewInput {
   review: String!
   score: Float!
 }
+
+input storeReviewInput {
+  accountId: ID!
+  reviewId: ID
+  storeName: String!
+  review: String!
+  score: Float!
+}
+
 extend type Mutation {
   createOrUpdateProductReview(input: productReviewInput): productReview
+  createOrUpdateStoreReview(input: storeReviewInput): storeReview
 }
 extend type Query {
   productReviews(
@@ -31,4 +51,15 @@ extend type Query {
     sortOrder: SortOrder = desc
     sortBy: ProductSortByField = createdAt
   ): [productReview]
+
+  storeReviews(
+    storeName: ID!
+    after: ConnectionCursor
+    before: ConnectionCursor
+    first: ConnectionLimitInt
+    last: ConnectionLimitInt
+    offset: Int
+    sortOrder: SortOrder = desc
+    sortBy: ProductSortByField = createdAt
+  ): [storeReview]
 }
